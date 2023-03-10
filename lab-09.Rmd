@@ -8,3 +8,112 @@ output: github_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
+```{r PACKAGES}
+library(tidyverse) 
+library(broom)
+library(openintro)
+```
+
+### Exercise 1
+
+```{r score-dist}
+ggplot(evals, aes(x = score))+
+  geom_histogram()
+```
+
+### Exercise 2
+
+```{r score-bty}
+ggplot(evals, aes(x = score, y = bty_avg))+
+  geom_point()
+```
+
+### Exercise 3
+
+```{r jitter}
+ggplot(evals, aes(x = score, y = bty_avg))+
+  geom_jitter()
+```
+
+### Exercise 4
+
+```{r regression}
+m_bty <- lm(data = evals, score ~ bty_avg)
+
+summary(m_bty)
+```
+
+### Exercise 5
+
+```{r scatter-slope}
+ggplot(evals, aes(x = score, y = bty_avg))+
+  geom_point()+
+  geom_smooth(method = "lm", se = F, color = "orange", linewidth = 2)+
+  theme_classic()
+```
+
+### Exercise 6
+
+...
+
+### Exercise 7
+
+...
+
+### Exercise 8
+
+...
+
+### Exercise 9
+
+```{r cat-regression}
+m_gen <- lm(data = evals, score ~ gender)
+
+summary(m_gen)
+```
+
+### Exercise 10
+
+...
+
+### Exercise 11
+
+``` {r rank}
+m_rank <- lm(data = evals, score ~ rank)
+
+summary(m_rank)
+```
+
+### Exercise 12
+
+```{r recode}
+evals <- evals %>%
+  mutate(rank_relevel = case_when(
+    rank == "tenure track" ~ 0,
+    rank == "tenured" ~ 1,
+    rank == "teaching" ~ -1))
+```
+
+### Exercise 13
+
+```{r rank-redo}
+m_rank_relevel <- lm(data = evals, score ~ rank_relevel)
+
+summary(m_rank_relevel)
+```
+
+### Exercise 14
+
+```{r tenurey}
+evals <- evals %>%
+  mutate(tenure_eligible = if_else(rank == "teaching", "no", "yes"))
+```
+
+### Exercise 15
+
+```{r tenure-regress}
+m_tenure_eligible <- lm(data = evals, score ~ tenure_eligible)
+
+summary(m_tenure_eligible)
+```
